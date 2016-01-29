@@ -481,20 +481,21 @@ export default class Collection {
    * Lists records from the local database.
    *
    * Params:
-   * - {Object} filters The filters to apply (default: `{}`).
-   * - {String} order   The order to apply   (default: `-last_modified`).
+   * - {Object} selector Defines a selector to filter the results
+                         (default: `{}`).
+   * - {String} order    The order to apply   (default: `-last_modified`).
    *
    * Options:
    * - {Boolean} includeDeleted: Include virtually deleted records.
    *
-   * @param  {Object} params  The filters and order to apply to the results.
+   * @param  {Object} params  The selector and order to apply to the results.
    * @param  {Object} options The options object.
    * @return {Promise}
    */
   list(params={}, options={includeDeleted: false}) {
-    params = Object.assign({order: "-last_modified", filters: {}}, params);
-    return this.db.list().then(results => {
-      let reduced = reduceRecords(params.filters, params.order, results);
+    params = Object.assign({order: "-last_modified", selector: {}}, params);
+    return this.db.list(params).then(results => {
+      let reduced = reduceRecords(params.selector, params.order, results);
       if (!options.includeDeleted) {
         reduced = reduced.filter(record => record._status !== "deleted");
       }

@@ -696,28 +696,38 @@ describe("Collection", () => {
       const fixtures = [
         {title: "art1", last_modified: 3, unread: true, complete: true},
         {title: "art2", last_modified: 2, unread: false, complete: true},
-        {title: "art3", last_modified: 1, unread: true, complete: false},
+        {id: uuid4(), title: "art3", last_modified: 1, unread: true, complete: false},
       ];
 
       beforeEach(() => {
         articles = testCollection();
-        return Promise.all(fixtures.map(r => articles.create(r)));
+        return Promise.all([
+          articles.create(fixtures[0]),
+          articles.create(fixtures[1]),
+          articles.create(fixtures[2], {synced: true})
+        ]);
+      });
+
+      it("should filter records on indexed fields", () => {
+        return articles.list({selector: {_status: "created"}})
+          .then(res => res.data.map(r => r.title))
+          .should.eventually.become(["art1", "art2"]);
       });
 
       it("should filter records on existing field", () => {
-        return articles.list({filters: {unread: true}})
+        return articles.list({selector: {unread: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become(["art1", "art3"]);
       });
 
       it("should filter records on missing field", () => {
-        return articles.list({filters: {missing: true}})
+        return articles.list({selector: {missing: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become([]);
       });
 
-      it("should filter records on multiple fields", () => {
-        return articles.list({filters: {unread: true, complete: true}})
+      it("should filter records on multiple fields using 'and'", () => {
+        return articles.list({selector: {unread: true, complete: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become(["art1"]);
       });
@@ -738,7 +748,7 @@ describe("Collection", () => {
       it("should order and filter records", () => {
         return articles.list({
           order:   "-title",
-          filters: {unread: true, complete: true}
+          selector: {unread: true, complete: true}
         })
           .then(res => res.data.map(r => {
             return {title: r.title, unread: r.unread, complete: r.complete};
@@ -1308,7 +1318,7 @@ describe("Collection", () => {
 
     it("should reset the synced status of all local records", () => {
       return articles.resetSyncStatus()
-        .then(_ => articles.list({filters: {_status: "synced"}}))
+        .then(_ => articles.list({selector: {_status: "synced"}}))
         .should.eventually.have.property("data").to.have.length(0);
     });
 
@@ -1316,7 +1326,7 @@ describe("Collection", () => {
       return articles.resetSyncStatus()
         .then(_ => {
           return articles.list({
-            filters: {_status: "deleted"}
+            selector: {_status: "deleted"}
           }, {includeDeleted: true});
         })
         .should.eventually.have.property("data").to.have.length(0);

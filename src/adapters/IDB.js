@@ -1,6 +1,7 @@
 "use strict";
 
 import BaseAdapter from "./base.js";
+import { reduceRecords, waterfall } from "../utils";
 
 /**
  * IndexedDB adapter.
@@ -205,12 +206,30 @@ export default class IDB extends BaseAdapter {
    * @override
    * @return {Promise}
    */
-  list() {
+  list(params) {
+    // Extract from params.selector the first filter on indexed fields.
+    const filteredFields = Object.keys(params.selector);
+    const indexedFields = filteredFields.filter(f => {
+      return ["id", "_status", "last_modified"].indexOf(f) !== -1;
+    });
+    const rangeField = indexedFields[0];
+
     return this.open().then(() => {
       return new Promise((resolve, reject) => {
         const results = [];
         const {transaction, store} = this.prepare();
-        const request = store.openCursor();
+
+        let request;
+        if (rangeField) {
+          const value = params.selector[rangeField];
+          const range = IDBKeyRange.only(value);
+          const index = store.index(rangeField);
+          request = index.openCursor(range);
+        }
+        else {
+          request = store.openCursor();
+        }
+
         request.onsuccess = function(event) {
           const cursor = event.target.result;
           if (cursor) {
