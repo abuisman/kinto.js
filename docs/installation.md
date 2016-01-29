@@ -40,7 +40,7 @@ integrity with the hash provided below:
 |-------------------------|-------------------------------------------------------------------------|
 | Filename                | Hash                                                                    |
 |-------------------------|-------------------------------------------------------------------------|
-| kinto-1.2.0.js          | sha384-yybZoUwok0g5xWX1VmEsfhbjnnoP6/LR05oPzns0vPS8d50/iHA0Sh7g6c4Z5yPL |
-| kinto-1.2.0.min.js      | sha384-UeM7mwkFgDB7FrylF5h2uvc1xtS8QG91BVTPRSN1CxM+5KSQ6q6I0ff5Az1yrnu0 |
-| kinto-1.2.0.noshim.js   | sha384-l6pJHLTDOM0qCSqhBykIpc8VIclS0p41OeL3EuPvceghSkmOcm7m4fzjKf9DRMzX |
+| kinto-1.2.0.js          | sha384-zceqJ0xPeewNQ7bpILFGzCtsfoih/dOwop8kxkQ3RCiFuOPeQBC0RGnsaLO0lyhR |
+| kinto-1.2.0.min.js      | sha384-0bOd4qkbXoEiD3nL5tca70NfXWiFprRx1X+xEYVL+0oT/ZlKIoNW0jOcng4I1gGS |
+| kinto-1.2.0.noshim.js   | sha384-9f0I3QY+QWeXbCgrgvzWfMX/oCL9SHKcoOlACws/VvaARcrVGtgfpIfFvzu1UM4N |
 |-------------------------|-------------------------------------------------------------------------|
