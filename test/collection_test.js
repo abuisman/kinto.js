@@ -709,25 +709,25 @@ describe("Collection", () => {
       });
 
       it("should filter records on indexed fields", () => {
-        return articles.list({selector: {_status: "created"}})
+        return articles.list({filters: {_status: "created"}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become(["art1", "art2"]);
       });
 
       it("should filter records on existing field", () => {
-        return articles.list({selector: {unread: true}})
+        return articles.list({filters: {unread: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become(["art1", "art3"]);
       });
 
       it("should filter records on missing field", () => {
-        return articles.list({selector: {missing: true}})
+        return articles.list({filters: {missing: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become([]);
       });
 
       it("should filter records on multiple fields using 'and'", () => {
-        return articles.list({selector: {unread: true, complete: true}})
+        return articles.list({filters: {unread: true, complete: true}})
           .then(res => res.data.map(r => r.title))
           .should.eventually.become(["art1"]);
       });
@@ -748,7 +748,7 @@ describe("Collection", () => {
       it("should order and filter records", () => {
         return articles.list({
           order:   "-title",
-          selector: {unread: true, complete: true}
+          filters: {unread: true, complete: true}
         })
           .then(res => res.data.map(r => {
             return {title: r.title, unread: r.unread, complete: r.complete};
@@ -1318,7 +1318,7 @@ describe("Collection", () => {
 
     it("should reset the synced status of all local records", () => {
       return articles.resetSyncStatus()
-        .then(_ => articles.list({selector: {_status: "synced"}}))
+        .then(_ => articles.list({filters: {_status: "synced"}}))
         .should.eventually.have.property("data").to.have.length(0);
     });
 
@@ -1326,7 +1326,7 @@ describe("Collection", () => {
       return articles.resetSyncStatus()
         .then(_ => {
           return articles.list({
-            selector: {_status: "deleted"}
+            filters: {_status: "deleted"}
           }, {includeDeleted: true});
         })
         .should.eventually.have.property("data").to.have.length(0);

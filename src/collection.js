@@ -481,21 +481,20 @@ export default class Collection {
    * Lists records from the local database.
    *
    * Params:
-   * - {Object} selector Defines a selector to filter the results
-                         (default: `{}`).
+   * - {Object} filters  Filter the results (default: `{}`).
    * - {String} order    The order to apply   (default: `-last_modified`).
    *
    * Options:
    * - {Boolean} includeDeleted: Include virtually deleted records.
    *
-   * @param  {Object} params  The selector and order to apply to the results.
+   * @param  {Object} params  The filters and order to apply to the results.
    * @param  {Object} options The options object.
    * @return {Promise}
    */
   list(params={}, options={includeDeleted: false}) {
-    params = Object.assign({order: "-last_modified", selector: {}}, params);
+    params = Object.assign({order: "-last_modified", filters: {}}, params);
     return this.db.list(params).then(results => {
-      let reduced = reduceRecords(params.selector, params.order, results);
+      let reduced = reduceRecords(params.filters, params.order, results);
       if (!options.includeDeleted) {
         reduced = reduced.filter(record => record._status !== "deleted");
       }
@@ -607,9 +606,9 @@ export default class Collection {
     let _toDelete;
 
     return Promise.all([
-      this.list({selector: {_status: "created"}}),
-      this.list({selector: {_status: "updated"}}),
-      this.list({selector: {_status: "deleted"}}, {includeDeleted: true})
+      this.list({filters: {_status: "created"}}),
+      this.list({filters: {_status: "updated"}}),
+      this.list({filters: {_status: "deleted"}}, {includeDeleted: true})
     ])
       .then(([created, updated, deleted]) => {
         _toDelete = deleted.data;

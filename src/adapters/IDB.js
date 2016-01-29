@@ -207,8 +207,8 @@ export default class IDB extends BaseAdapter {
    * @return {Promise}
    */
   list(params) {
-    // Extract from params.selector the first filter on indexed fields.
-    const filteredFields = Object.keys(params.selector);
+    // Extract from params.filters the first filter on indexed fields.
+    const filteredFields = Object.keys(params.filters);
     const indexedFields = filteredFields.filter(f => {
       return ["id", "_status", "last_modified"].indexOf(f) !== -1;
     });
@@ -221,7 +221,7 @@ export default class IDB extends BaseAdapter {
 
         let request;
         if (rangeField) {
-          const value = params.selector[rangeField];
+          const value = params.filters[rangeField];
           const range = IDBKeyRange.only(value);
           const index = store.index(rangeField);
           request = index.openCursor(range);
