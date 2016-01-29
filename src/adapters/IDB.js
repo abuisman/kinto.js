@@ -205,7 +205,7 @@ export default class IDB extends BaseAdapter {
    * @override
    * @return {Promise}
    */
-  list(params) {
+  list(params={filters: {}}) {
     // Extract from params.filters the first filter on indexed fields.
     const filteredFields = Object.keys(params.filters);
     const indexedFields = filteredFields.filter(f => {
