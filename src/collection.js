@@ -605,22 +605,17 @@ export default class Collection {
    */
   gatherLocalChanges() {
     let _toDelete;
-    // XXX filter by status
-    return this.list({}, {includeDeleted: true})
-      .then(res => {
-        return res.data.reduce((acc, record) => {
-          if (record._status === "deleted" && !record.last_modified) {
-            acc.toDelete.push(record);
-          } else if (record._status !== "synced") {
-            acc.toSync.push(record);
-          }
-          return acc;
-          // rename toSync to toPush or toPublish
-        }, {toDelete: [], toSync: []});
-      })
-      .then(({toDelete, toSync}) => {
-        _toDelete = toDelete;
-        return Promise.all(toSync.map(this._encodeRecord.bind(this, "remote")));
+
+    return Promise.all([
+      this.list({selector: {_status: "created"}}),
+      this.list({selector: {_status: "updated"}}),
+      this.list({selector: {_status: "deleted"}}, {includeDeleted: true})
+    ])
+      .then(([created, updated, deleted]) => {
+        _toDelete = deleted.data;
+        // Encode unsynced records.
+        const unsyncRecords = created.data.concat(updated.data);
+        return Promise.all(unsyncRecords.map(this._encodeRecord.bind(this, "remote")));
       })
       .then(toSync => ({toDelete: _toDelete, toSync}));
   }
