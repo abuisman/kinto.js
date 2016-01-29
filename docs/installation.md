@@ -16,9 +16,9 @@ $ npm install kinto --save
 
 Dev and production ready assets are available in the [`gh-pages` branch of the repository](https://github.com/Kinto/kinto.js/tree/gh-pages). In general, you should download these files and ship them along your own projects, though you can also link them during development:
 
-- Dev version, including source maps: [kinto-1.1.2.js](http://npmcdn.com/kinto@1.1.2/dist/kinto-1.1.2.js)
-- Production version, minified, no source maps: [kinto-1.1.2.min.js](http://npmcdn.com/kinto@1.1.2/dist/kinto-1.1.2.min.js)
-- Minimalist version, without polyfills [kinto-1.1.2.noshim.js](http://npmcdn.com/kinto@1.1.2/dist/kinto-1.1.2.noshim.js)
+- Dev version, including source maps: [kinto-1.2.0.js](http://npmcdn.com/kinto@1.2.0/dist/kinto-1.2.0.js)
+- Production version, minified, no source maps: [kinto-1.2.0.min.js](http://npmcdn.com/kinto@1.2.0/dist/kinto-1.2.0.min.js)
+- Minimalist version, without polyfills [kinto-1.2.0.noshim.js](http://npmcdn.com/kinto@1.2.0/dist/kinto-1.2.0.noshim.js)
 
 > #### Notes
 >
@@ -28,19 +28,19 @@ Dev and production ready assets are available in the [`gh-pages` branch of the r
 ### Subresource integrity
 
 To make sure that you are using the right code when loading from a CDN, you can use subresource
-integrity with the hash provided in ``kinto.min.sha384`` with your release.
-
-For 1.0.0-rc.1, please use it like the following:
+integrity with the hash provided below:
 
 .. code-block:: html
 
-    <script src="https://cdn.rawgit.com/Kinto/kinto.js/1.0.0-rc.1/dist/kinto.min.js"
-            integrity="sha384-2EBP0zFAKrL1idZDEzowmRmkeEFAneGUwGUHKmGSWKtTtHRQPbyOJyCk0xCgT1pC"
+    <script src="//npmcdn.com/kinto@1.2.0/dist/kinto-1.2.0.min.js"
+            integrity="sha384-UeM7mwkFgDB7FrylF5h2uvc1xtS8QG91BVTPRSN1CxM+5KSQ6q6I0ff5Az1yrnu0"
             crossorigin="anonymous">
     </script>
 
-Where ``2EBP0zFAKrL1idZDEzowmRmkeEFAneGUwGUHKmGSWKtTtHRQPbyOJyCk0xCgT1pC``
-is the value in ``dist/kinto.min.sha384``.
-
-If you need to calculate your subresource integrity hash please use
-https://srihash.org/.
+|-------------------------|-------------------------------------------------------------------------|
+| Filename                | Hash                                                                    |
+|-------------------------|-------------------------------------------------------------------------|
+| kinto-1.2.0.js          | sha384-yybZoUwok0g5xWX1VmEsfhbjnnoP6/LR05oPzns0vPS8d50/iHA0Sh7g6c4Z5yPL |
+| kinto-1.2.0.min.js      | sha384-UeM7mwkFgDB7FrylF5h2uvc1xtS8QG91BVTPRSN1CxM+5KSQ6q6I0ff5Az1yrnu0 |
+| kinto-1.2.0.noshim.js   | sha384-l6pJHLTDOM0qCSqhBykIpc8VIclS0p41OeL3EuPvceghSkmOcm7m4fzjKf9DRMzX |
+|-------------------------|-------------------------------------------------------------------------|
