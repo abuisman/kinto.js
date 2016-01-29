@@ -481,8 +481,8 @@ export default class Collection {
    * Lists records from the local database.
    *
    * Params:
-   * - {Object} filters  Filter the results (default: `{}`).
-   * - {String} order    The order to apply   (default: `-last_modified`).
+   * - {Object} filters Filter the results (default: `{}`).
+   * - {String} order   The order to apply   (default: `-last_modified`).
    *
    * Options:
    * - {Boolean} includeDeleted: Include virtually deleted records.
@@ -604,11 +604,10 @@ export default class Collection {
    */
   gatherLocalChanges() {
     let _toDelete;
-
     return Promise.all([
-      this.list({filters: {_status: "created"}}),
-      this.list({filters: {_status: "updated"}}),
-      this.list({filters: {_status: "deleted"}}, {includeDeleted: true})
+      this.list({order: "", filters: {_status: "created"}}),
+      this.list({order: "", filters: {_status: "updated"}}),
+      this.list({order: "", filters: {_status: "deleted"}}, {includeDeleted: true})
     ])
       .then(([created, updated, deleted]) => {
         _toDelete = deleted.data;

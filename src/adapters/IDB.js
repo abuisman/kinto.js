@@ -1,7 +1,6 @@
 "use strict";
 
 import BaseAdapter from "./base.js";
-import { reduceRecords, waterfall } from "../utils";
 
 /**
  * IndexedDB adapter.
