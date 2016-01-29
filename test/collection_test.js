@@ -856,7 +856,7 @@ describe("Collection", () => {
     });
 
     describe("transformers", () => {
-      it.only("should asynchronously encode records", () => {
+      it("should asynchronously encode records", () => {
         articles = testCollection({
           remoteTransformers: [
             createEncodeTransformer("?", 10),
