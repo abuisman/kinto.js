@@ -850,13 +850,13 @@ describe("Collection", () => {
     beforeEach(() => {
       articles = testCollection();
       return Promise.all([
-        articles.create({title: "abcdef", last_modified: 2}),
-        articles.create({title: "ghijkl", last_modified: 1}),
+        articles.create({title: "abcdef"}),
+        articles.create({title: "ghijkl"}),
       ]);
     });
 
     describe("transformers", () => {
-      it("should asynchronously encode records", () => {
+      it.only("should asynchronously encode records", () => {
         articles = testCollection({
           remoteTransformers: [
             createEncodeTransformer("?", 10),
@@ -865,7 +865,7 @@ describe("Collection", () => {
         });
 
         return articles.gatherLocalChanges()
-          .then(res => res.toSync.map(r => r.title))
+          .then(res => res.toSync.map(r => r.title).sort())
           .should.become(["abcdef?!", "ghijkl?!"]);
       });
     });
